@@ -1,0 +1,6 @@
+@IncidentAPI_ISIMM_MP1_GL_HostAddress = http://localhost:5270
+
+GET {{IncidentAPI_ISIMM_MP1_GL_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
