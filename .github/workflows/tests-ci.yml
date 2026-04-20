@@ -18,12 +18,7 @@ jobs:
           SA_PASSWORD: "My_password123"
         ports:
           - 1433:1433
-        options: >-
-          --health-cmd="exit 0"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-
+        
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
