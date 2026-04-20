@@ -10,21 +10,21 @@ jobs:
   build-and-test:
     runs-on: windows-latest
 
-  services:
-    sqlserver:
-      image: mcr.microsoft.com/mssql/server:2022-latest
-      env:
-        ACCEPT_EULA: "Y"
-        SA_PASSWORD: "My_password123"
-      ports:
-        - 1433:1433
-      options: >-
-        --health-cmd="exit 0"
-        --health-interval=10s
-        --health-timeout=5s
-        --health-retries=10
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          SA_PASSWORD: "My_password123"
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd="exit 0"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
 
-steps:
+    steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
