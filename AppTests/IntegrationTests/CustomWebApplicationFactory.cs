@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using IncidentAPI_ISIMM_MP1_GL.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace AppTests.IntegrationTests
 {
@@ -18,7 +19,7 @@ namespace AppTests.IntegrationTests
         {
             builder.UseEnvironment("Testing");
 
-            builder.ConfigureServices(services =>
+            builder.ConfigureServices((context, services) =>
             {
                 // Supprimer l'ancien DbContext
                 var descriptor = services.SingleOrDefault(
@@ -28,9 +29,20 @@ namespace AppTests.IntegrationTests
                     services.Remove(descriptor);
 
                 // Ajouter un DbContext avec BD de test
+                /*   services.AddDbContext<IncidentsDbContext>(options =>
+                       options.UseSqlServer(
+                           "Server=(localdb)\\mssqllocaldb;Database=IncidentDb_Test;Trusted_Connection=True;TrustServerCertificate=True;"));
+                */
+
+               
+                // Récupérer la config (inclut variables d'environnement)
+                var configuration = context.Configuration;
+
+                var connectionString = configuration.GetConnectionString("IncidentsConnection");
+
+                // Ajouter le DbContext avec la bonne connexion
                 services.AddDbContext<IncidentsDbContext>(options =>
-                    options.UseSqlServer(
-                        "Server=(localdb)\\mssqllocaldb;Database=IncidentDb_Test;Trusted_Connection=True;TrustServerCertificate=True;"));
+                    options.UseSqlServer(connectionString));
 
                 // Construire le provider
                 var sp = services.BuildServiceProvider();
