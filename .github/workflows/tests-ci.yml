@@ -39,6 +39,9 @@ jobs:
     - name: Build project
       run: dotnet build --no-restore
 
+    - name: Wait for SQL Server
+      run: sleep 20
+
     - name: Run tests
       env:
         ConnectionStrings__IncidentsConnection: "Server=localhost,1433;Database=IncidentsDB;User Id=sa;Password=My_password123;TrustServerCertificate=True;"
