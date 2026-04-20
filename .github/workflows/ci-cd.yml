@@ -1,0 +1,73 @@
+name: .NET CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build project
+      run: dotnet build --no-restore
+
+    - name: Run Unit Tests
+      run: dotnet test --no-build --verbosity normal --filter "Category=Unit"
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          SA_PASSWORD: "My_password123"
+        ports:
+          - 1433:1433
+       
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build project
+      run: dotnet build --no-restore
+
+    - name: Run Integration Tests
+      env:
+        ConnectionStrings__IncidentsConnection: "Server=localhost,1433;Database=IncidentsDb;User Id=sa;Password=My_password123;TrustServerCertificate=True;"
+      run: dotnet test --no-build --verbosity normal --filter "Category=Integration"
+
+  deploy:
+    needs: [unit-tests, integration-tests]
+    runs-on: ubuntu-latest
+
+    
+    steps:
+      
+      - name: Simulate deployment
+        run: |
+          echo "Deploying application..."
+          echo "Deployment successful!"
