@@ -2,6 +2,8 @@ using IncidentAPI_ISIMM_MP1_GL.Classes;
 
 namespace AppTests
 {
+    [Trait("Category", "Unit")]
+
     public class SumTests
     {
         [Fact]

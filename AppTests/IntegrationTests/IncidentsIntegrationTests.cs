@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace AppTests.IntegrationTests
 {
+    [Trait("Category", "Integration")]
+
     public class IncidentsIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;

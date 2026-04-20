@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace AppTests
 {
+    [Trait("Category", "Unit")]
+
     public class IncidentsTests
     {
         private IncidentsDbContext GetDbContext()
