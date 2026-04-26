@@ -92,5 +92,5 @@ jobs:
         context: .
         push: true
         tags: |
-          nkhayati/incidents-api:latest
-          nkhayati/incidents-api:1.0
+          nkhayati/incidents-api2:latest
+          nkhayati/incidents-api2:1.0
