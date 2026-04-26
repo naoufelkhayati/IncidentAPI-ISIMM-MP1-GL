@@ -60,14 +60,37 @@ jobs:
         ConnectionStrings__IncidentsConnection: "Server=localhost,1433;Database=IncidentsDb;User Id=sa;Password=My_password123;TrustServerCertificate=True;"
       run: dotnet test --no-build --verbosity normal --filter "Category=Integration"
 
+  #deploy:
+   # needs: [unit-tests, integration-tests]
+    #runs-on: ubuntu-latest
+    
+    #steps:    
+     # - name: Simulate deployment
+      #  run: |
+       #   echo "Deploying application..."
+        #  echo "Deployment successful!"
+
   deploy:
     needs: [unit-tests, integration-tests]
     runs-on: ubuntu-latest
 
-    
     steps:
-      
-      - name: Simulate deployment
-        run: |
-          echo "Deploying application..."
-          echo "Deployment successful!"
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Login Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # Build + Push image
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          nkhayati/incidents-api:latest
+          nkhayati/incidents-api:1.0
